@@ -13,7 +13,8 @@ Authors: David Mutchler, Dave Fisher, Valerie Galluzzi, Amanda Stouder,
 """  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import rosegraphics as rg
-
+import math
+import builtins
 
 # ----------------------------------------------------------------------
 # Students: As you work each of these problems, ask yourself:
@@ -214,7 +215,7 @@ def draw_circles_from_rectangle(m, n, rectangle, window):
       :type window: rg.RoseWindow
     """
     # ------------------------------------------------------------------
-    # TODO: 4. Implement and test this function.
+    # DONE: 4. Implement and test this function.
     #          Tests have been written for you (above).
     #
     # CONSIDER using the ACCUMULATOR IN GRAPHICS pattern,
@@ -228,12 +229,27 @@ def draw_circles_from_rectangle(m, n, rectangle, window):
     ####################################################################
     # ------------------------------------------------------------------
     rectangle.attach_to(window)
-    height = rectangle.corner_1.y - rectangle.corner_2.y
-    startx= (rectangle.corner_2.x - rectangle.corner_1.x)/2
-    reccent = rg.Point()
-    bob = rg.Circle(rg.Point(), height)
-    for k in range(m):
-        tim = rg.Circle()
+    height = rectangle.get_height()
+    width = rectangle.get_width()
+    reccent = rectangle.get_center()
+    bob = rg.Circle(rg.Point(reccent.x - height/2 - width/2, reccent.y), height/2)
+    bob.fill_color = rectangle.fill_color
+    bob.attach_to(window)
+    for k in range(m-1):
+        tim = rg.Circle(rg.Point(bob.center.x - (height * (k+1)), bob.center.y), height/2)
+        tim.fill_color = rectangle.fill_color
+        tim.attach_to(window)
+    jerry = rg.Circle(rg.Point(reccent.x, reccent.y - height / 2 - width / 2), width / 2)
+    jerry.outline_color = rectangle.outline_color
+    jerry.attach_to(window)
+    for k in range(m - 1):
+        tim = rg.Circle(rg.Point(jerry.center.x, jerry.center.y - (width * (k + 1))), width / 2)
+        tim.outline_color = rectangle.outline_color
+        tim.attach_to(window)
+    window.render()
+
+    # for k in range(m):
+    #   tim = rg.Circle()
 
 def run_test_draw_lines_from_rectangles():
     """ Tests the   draw_lines_from_rectangles  function. """
